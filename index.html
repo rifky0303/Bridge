@@ -230,6 +230,7 @@
       font-size: 20px;
       font-weight: 400;
       text-decoration: none;
+      cursor: pointer;
     }
 
     .language-switcher {
@@ -606,6 +607,50 @@
         translate3d(-50%, var(--panel3-y), 0);
     }
 
+    .story-panel-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+.profile-picture {
+  width: 140px;
+  height: 140px;
+  border-radius: 18px; /* kotak dengan sudut membulat */
+  overflow: hidden;
+  border: 4px solid #fdf1e1;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%; /* lebih fokus ke wajah */
+  display: block;
+}
+    .profile-picture a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-picture a:hover {
+  transform: none;
+}
+
+    .profile-picture img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .facts {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -653,6 +698,115 @@
       line-height: 1;
     }
 
+    /* ---------- Nav modal ---------- */
+    .nav-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(11, 17, 16, 0.72);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 280ms ease;
+    }
+
+    .nav-modal-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-modal {
+      position: relative;
+      width: min(720px, 100%);
+      max-height: min(86vh, 780px);
+      overflow: hidden auto;
+      border-radius: 28px;
+      background: var(--paper);
+      color: var(--ink);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+      transform: translateY(18px) scale(0.98);
+      transition: transform 280ms ease;
+    }
+
+    .nav-modal-overlay.is-open .nav-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .nav-modal-image {
+      width: 100%;
+      height: min(46vh, 380px);
+      overflow: hidden;
+      background: #ddd;
+    }
+
+    .nav-modal-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .nav-modal-body {
+      padding: 32px clamp(24px, 4vw, 44px) 40px;
+    }
+
+    .nav-modal-kicker {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(17, 20, 17, 0.55);
+    }
+
+    .nav-modal-body h3 {
+      margin: 0 0 16px;
+      font-family: "Ogg Medium", serif;
+      font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+      font-weight: 500;
+      line-height: 1.02;
+    }
+
+    .nav-modal-body p {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1.5;
+      color: rgba(17, 20, 17, 0.86);
+    }
+
+    .nav-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: #fdf1e1;
+      background: rgba(17, 20, 17, 0.55);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .nav-modal-close:hover {
+      background: rgba(17, 20, 17, 0.75);
+    }
+
+    @media (max-width: 640px) {
+      .nav-modal-body {
+        padding: 24px 22px 32px;
+      }
+    }
+
     @media (max-width: 1500px) {
       .hero-title {
         font-size: 11rem;
@@ -693,6 +847,15 @@
       .sight-card {
         flex-basis: clamp(320px, 40vw, 390px);
         min-height: 178px;
+      }
+
+      .story-panel-wrapper {
+        gap: 24px;
+      }
+
+      .profile-picture {
+        width: 100px;
+        height: 100px;
       }
     }
 
@@ -765,6 +928,16 @@
         font-size: 2.45rem;
       }
 
+      .story-panel-wrapper {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .profile-picture {
+        width: 90px;
+        height: 90px;
+      }
+
       .facts {
         gap: 18px;
         margin-top: 34px;
@@ -834,6 +1007,10 @@
       .sights-slider {
         transition: none;
       }
+
+      .profile-picture a {
+        transition: none;
+      }
     }
   </style>
 </head>
@@ -860,10 +1037,10 @@
             </a>
 
             <nav class="site-nav" aria-label="Main menu">
-              <a href="#cinema">Intro</a>
-              <a href="#bridge">Bridge</a>
-              <a href="#bazaar">Bazaar</a>
-              <a href="#routes">Routes</a>
+              <a href="#cinema" data-nav="intro">Kflowers</a>
+              <a href="#bridge" data-nav="bridge">Adidas</a>
+              <a href="#bazaar" data-nav="bazaar">Porche</a>
+              <a href="#routes" data-nav="routes">Ghibli</a>
             </nav>
 
             <button
@@ -1044,16 +1221,16 @@
           aria-label="Mostar overview"
         >
           <p>
-           A stone arch, emerald water, and a compact old city made for slow mornings, late light, and one unforgettable crossing.
+          Selamat Datang dan Selamat Berkenalan dengan saya.
           </p>
 
           <div
             class="hero-tags"
             aria-label="Mostar highlights"
           >
-            <span>Old Bridge</span>
-            <span>Neretva River</span>
-            <span>UNESCO old city</span>
+            <span>Web Design</span>
+            <span>UI/UX</span>
+            <span>Web/App Dev</span>
           </div>
         </section>
 
@@ -1062,24 +1239,35 @@
           id="bridge"
           aria-label="Old Bridge details"
         >
-          <h2>The bridge is the city's compass.</h2>
-
-          <p>
-            Stari Most links the banks of the Neretva and anchors a historic
-            quarter shaped by Ottoman, Mediterranean, and European layers.
-          </p>
-
-          <dl class="facts">
+          <div class="story-panel-wrapper">
             <div>
-              <dt>1566</dt>
-              <dd>Original bridge completed</dd>
+              <h2>Rifky Candra Muzaki.</h2>
+
+              <p>
+                Rifky Candra Muzaki adalah seorang pegiat teknologi yang memiliki keahlian khusus di bidang web design serta pemahaman luas seputar dunia IT, siap mengembangkan berbagai proyek digital dengan tampilan yang menarik dan fungsional.
+
+              <dl class="facts">
+                <div>
+                  <dt>2024</dt>
+                  <dd>Saya Mempelajari pada bidang Web Design</dd>
+                </div>
+
+                <div>
+                  <dt>2026</dt>
+                  <dd>Praktek Dan memulai Dunia IT/TI</dd>
+                </div>
+              </dl>
             </div>
 
-            <div>
-              <dt>2005</dt>
-              <dd>Old Bridge Area inscribed by UNESCO</dd>
+            <div class="profile-picture">
+              <a href="https://example.com" title="Visit profile">
+                <img
+                  src="https://cdn.phototourl.com/free/2026-09-05-c3768429-1b0a-4cef-a662-977370232f7e.jpg"
+                  alt="Profile picture"
+                />
+              </a>
             </div>
-          </dl>
+          </div>
         </section>
 
         <section
@@ -1087,22 +1275,35 @@
           id="bazaar"
           aria-label="Old town details"
         >
-          <h2>The bazaar keeps Mostar close.</h2>
+          <h2>I build digital experiences.</h2>
 
           <p>
-            Stone lanes, mosque courtyards, copper stalls, and riverside coffee
-            stay within a short walk of Stari Most.
+           Saya mengembangkan website dan pengalaman digital dengan menggabungkan desain yang modern, interaksi yang menarik, dan fungsionalitas yang tetap nyaman digunakan.
           </p>
 
           <button class="note-button" type="button">
             <span aria-hidden="true">↗</span>
-            <span>Open old town notes</span>
+            <span>View my projects ↗</span>
           </button>
         </section>
 
       </div>
     </section>
   </main>
+
+  <div class="nav-modal-overlay" id="navModalOverlay" aria-hidden="true">
+    <div class="nav-modal" role="dialog" aria-modal="true" aria-labelledby="navModalTitle">
+      <button class="nav-modal-close" type="button" id="navModalClose" aria-label="Tutup">×</button>
+      <div class="nav-modal-image">
+        <img id="navModalImage" src="" alt="" />
+      </div>
+      <div class="nav-modal-body">
+        <span class="nav-modal-kicker" id="navModalKicker"></span>
+        <h3 id="navModalTitle"></h3>
+        <p id="navModalText"></p>
+      </div>
+    </div>
+  </div>
 
   <script>
     (() => {
@@ -1759,6 +1960,97 @@
 
       setupSightSlider();
       requestTick();
+
+      /* ---------- Nav modal ---------- */
+
+      const navContent = {
+        intro: {
+          kicker: "Web",
+          title: "  Kflowers",
+          image:
+            "https://cdn.phototourl.com/free/2026-09-05-ad33d44d-cb91-469f-9a39-e4550317371d.png",
+          text:
+            "ini Saya membuat untuk pertamakalinya Website Jual Bunga kawat dengan bertemakan pink yang menjadi warna atau ciri khas sebagian besar Wanita  ."
+        },
+        bridge: {
+          kicker: "Web",
+          title: "Adidas",
+          image:
+            "https://cdn.phototourl.com/free/2026-09-05-818d7c07-dd1a-4fcc-b837-d61641a7d75d.png",
+          text:
+            "Sama seperti K flowers namun di sini saya membuat websitenya lebih simple dengan berjualan sepatu yang kalau di realisasikan sebagai seller."
+        },
+        bazaar: {
+          kicker: "Web",
+          title: "The Porch",
+          image:
+            "https://cdn.phototourl.com/free/2026-09-05-cd37dad9-673a-4afd-b8e8-a8975e65e783.png",
+          text:
+            "Salah satu web Paling interaktif dan Modern untuk beberapa tahun kedepan dengan banyaknya fitur dan ekperience yang di dapat."
+        },
+        routes: {
+          kicker: "Web",
+          title: "Ghibli",
+          image:
+            "https://cdn.phototourl.com/free/2026-09-05-67311868-bd4d-4abb-8c38-86646b4128e5.png",
+          text:
+            "Bagian ini sedang dikembangkan dengan tema Ghibli, dari perencanaan tampilan (UI/UX) hingga pengembangan web dan aplikasi yang siap digunakan."
+        }
+      };
+
+      const overlay = document.getElementById("navModalOverlay");
+      const modalImage = document.getElementById("navModalImage");
+      const modalKicker = document.getElementById("navModalKicker");
+      const modalTitle = document.getElementById("navModalTitle");
+      const modalText = document.getElementById("navModalText");
+      const modalClose = document.getElementById("navModalClose");
+
+      function openNavModal(key) {
+        const data = navContent[key];
+        if (!data) return;
+
+        modalImage.src = data.image;
+        modalImage.alt = data.title;
+        modalKicker.textContent = data.kicker;
+        modalTitle.textContent = data.title;
+        modalText.textContent = data.text;
+
+        overlay.classList.add("is-open");
+        overlay.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeNavModal() {
+        overlay.classList.remove("is-open");
+        overlay.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+
+      document
+        .querySelectorAll(".site-nav a[data-nav]")
+        .forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            openNavModal(link.dataset.nav);
+          });
+        });
+
+      modalClose.addEventListener("click", closeNavModal);
+
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+          closeNavModal();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.key === "Escape" &&
+          overlay.classList.contains("is-open")
+        ) {
+          closeNavModal();
+        }
+      });
     })();
   </script>
 </body>
